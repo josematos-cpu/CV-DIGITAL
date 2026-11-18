@@ -32,11 +32,13 @@
         }
     </script>
     <style>
+        /* Variáveis dinâmicas de tema */
         :root {
             --theme-primary: #12263A;
             --theme-secondary: #1E3A5F;
         }
 
+        /* Estilos do Modo de Edição */
         body.edit-mode [data-editable="true"] {
             outline: 1.5px dashed rgba(59, 130, 246, 0.55);
             outline-offset: 2px;
@@ -53,6 +55,7 @@
             outline: 2px solid #2563eb;
         }
 
+        /* Garantia de dimensões exatas A4 sem cortes */
         .a4-sheet {
             width: 210mm;
             height: 297mm;
@@ -64,6 +67,7 @@
             transform-origin: top center;
         }
 
+        /* Moldura da Foto de Perfil */
         .photo-frame {
             transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
         }
@@ -71,6 +75,7 @@
             opacity: 1;
         }
 
+        /* Regras estritas de Impressão / Exportação PDF */
         @media print {
             #photo-wrapper.no-photo #photo-frame-box {
                 border-color: transparent !important;
@@ -131,7 +136,7 @@
 </head>
 <body class="bg-slate-200 font-sans antialiased text-gray-900 min-h-screen flex flex-col">
 
-    <!-- MODAL DE PROTEÇÃO POR SENHA (APARECE SE NÃO ESTIVER AUTORIZADO) -->
+    <!-- MODAL DE PROTEÇÃO POR SENHA -->
     <div id="auth-modal" class="fixed inset-0 z-[100] bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 sm:p-8 border border-slate-200 text-center">
             <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto mb-4">
@@ -140,7 +145,7 @@
                 </svg>
             </div>
             <h2 class="text-lg font-bold text-gray-900 mb-1">Acesso Protegido</h2>
-            <p class="text-xs text-gray-600 mb-6">Este currículo está no modo de visualização. Insira a senha de administração para desbloquear os controles de edição ou clique em visualizar.</p>
+            <p class="text-xs text-gray-600 mb-6">Insira a palavra-passe para desbloquear os controlos de edição ou clique em visualizar.</p>
             
             <form onsubmit="handleAuth(event)" class="space-y-4">
                 <div>
@@ -166,8 +171,8 @@
                     </svg>
                 </div>
                 <div>
-                    <span class="text-xs sm:text-sm font-bold tracking-wide block leading-tight">Editor Protegido (Modo Admin)</span>
-                    <span class="text-[11px] text-slate-400 hidden sm:block">Eng. José Matos da Silva</span>
+                    <span class="text-xs sm:text-sm font-bold tracking-wide block leading-tight">Editor de Currículo A4</span>
+                    <span class="text-[11px] text-slate-400 hidden sm:block">Modo Administrador Ativo</span>
                 </div>
             </div>
 
@@ -223,8 +228,8 @@
                     <span>Imprimir / PDF</span>
                 </button>
 
-                <button type="button" onclick="lockSession()" title="Bloquear sessão" class="px-2 py-1.5 rounded-lg bg-rose-900/60 hover:bg-rose-900 text-rose-200 text-xs border border-rose-700 transition cursor-pointer">
-                    Sair
+                <button type="button" onclick="lockSession()" title="Sair do modo admin" class="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-rose-800 hover:bg-rose-700 text-white transition cursor-pointer">
+                    Bloquear
                 </button>
             </div>
         </div>
@@ -251,22 +256,14 @@
         </div>
     </div>
 
-    <!-- BOTÃO FLUTUANTE DE IMPRESSÃO / VISUALIZAÇÃO PARA VISITANTES -->
-    <div id="floating-print-btn" class="fixed bottom-6 right-6 z-40">
-        <button type="button" onclick="printCV()" class="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-4 py-3 rounded-full shadow-2xl font-bold text-xs transition cursor-pointer">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
-            </svg>
-            <span>Imprimir Currículo / PDF</span>
-        </button>
-    </div>
-
-    <!-- ÁREA DE TRABALHO COM A FOLHA A4 -->
+    <!-- ÁREA DE TRABALHO COM ESCALA A4 INTEGRAL (SEM CORTES) -->
     <div id="workspace-wrapper" class="flex-1 w-full overflow-x-auto overflow-y-visible py-5 sm:py-8 px-2 flex justify-center items-start">
         <div id="a4-scale-container" class="flex justify-center">
             
+            <!-- FOLHA A4 EXATA (210mm x 297mm) -->
             <div id="cv-document" class="a4-sheet bg-white shadow-2xl relative overflow-hidden flex flex-col justify-between">
                 
+                <!-- Formas Geométricas Decorativas - Topo Direito -->
                 <div class="absolute top-0 right-0 pointer-events-none select-none z-0 w-[108mm] h-[45mm]">
                     <svg viewBox="0 0 440 180" class="w-full h-full" preserveAspectRatio="none">
                         <polygon points="355,0 385,0 295,112 265,112" fill="#AEB4BC" />
@@ -276,162 +273,523 @@
                     </svg>
                 </div>
 
+                <!-- Conteúdo Principal -->
                 <div class="relative z-10 px-[11mm] pt-[8mm] pb-[4mm] flex-1 flex flex-col">
+                    
+                    <!-- Cabeçalho -->
                     <header class="mb-[3mm]">
                         <div class="flex items-center gap-[5mm]">
+                            
                             <div id="photo-wrapper" class="no-photo relative shrink-0 group">
                                 <div class="photo-decor theme-primary-bg absolute -top-[1.5mm] -left-[1.5mm] w-[10mm] h-[10mm] bg-[#12263A] pointer-events-none"></div>
                                 <div class="photo-decor absolute -bottom-[1.5mm] -right-[1.5mm] w-[14mm] h-[4mm] bg-[#AEB4BC] pointer-events-none"></div>
 
-                                <div id="photo-frame-box" onclick="triggerPhotoUpload()" title="Fotografia de perfil" class="photo-frame theme-primary-border relative w-[29mm] h-[29mm] bg-slate-50 border-[2px] border-transparent overflow-hidden cursor-default flex items-center justify-center shadow-sm">
+                                <div id="photo-frame-box" onclick="triggerPhotoUpload()" title="Clique para carregar foto de perfil" class="photo-frame theme-primary-border relative w-[29mm] h-[29mm] bg-slate-50 border-[2px] border-transparent overflow-hidden cursor-pointer flex items-center justify-center shadow-sm">
                                     <div id="photo-placeholder" class="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 text-[#12263A] relative">
                                         <div class="photo-corner-decor absolute top-0 right-0 w-4 h-4 bg-[#D3D7DC]/60" style="clip-path: polygon(0 0, 100% 0, 100% 100%);"></div>
                                         <svg class="theme-primary-text w-10 h-10 text-[#12263A]/45" viewBox="0 0 24 24" fill="currentColor">
                                             <path d="M12 12c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm0 2.5c-3.33 0-10 1.67-10 5V22h20v-2.5c0-3.33-6.67-5-10-5z"/>
                                         </svg>
+                                        <span class="no-print text-[8px] font-semibold uppercase tracking-wider text-slate-500 mt-0.5">Foto (Opcional)</span>
                                     </div>
                                     <img id="profile-photo-img" src="" alt="Foto de Perfil" class="hidden w-full h-full object-cover object-center" />
                                     <div class="photo-overlay opacity-0 transition-opacity duration-150 absolute inset-0 bg-[#0D1B2A]/75 text-white flex flex-col items-center justify-center text-center p-1">
-                                        <span class="text-[8.5px] font-semibold leading-tight">Foto</span>
+                                        <svg class="w-4 h-4 mb-0.5 text-sky-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+                                            <circle cx="12" cy="13" r="3"/>
+                                        </svg>
+                                        <span class="text-[8.5px] font-semibold leading-tight">Carregar Foto</span>
                                     </div>
                                 </div>
-                                <button id="btn-remove-photo" type="button" onclick="removeProfilePhoto(event)" title="Remover foto" class="photo-remove-btn hidden absolute -top-2 -right-2 z-20 w-5 h-5 rounded-full bg-rose-600 hover:bg-rose-500 text-white shadow flex items-center justify-center text-[11px] font-bold cursor-pointer">×</button>
+                                <button id="btn-remove-photo" type="button" onclick="removeProfilePhoto(event)" title="Remover foto" class="photo-remove-btn hidden absolute -top-2 -right-2 z-20 w-5 h-5 rounded-full bg-rose-600 hover:bg-rose-500 text-white shadow flex items-center justify-center text-[11px] font-bold cursor-pointer">
+                                    ×
+                                </button>
                             </div>
 
                             <div class="flex-1 min-w-0">
-                                <h1 data-editable="true" class="theme-primary-text text-[28px] font-extrabold text-[#12263A] tracking-tight leading-tight">José Matos da Silva</h1>
-                                <p data-editable="true" class="theme-primary-text text-[14.5px] font-medium text-[#12263A] tracking-[0.26em] uppercase mt-1">ENGENHEIRO CIVIL</p>
-                                <p data-editable="true" class="theme-primary-text text-[13.5px] italic text-[#12263A] leading-snug mt-2 font-medium max-w-sm">Fiscalização, Gestão de Obras e<br>Desenvolvimento de Projectos</p>
+                                <h1 data-editable="true" class="theme-primary-text text-[28px] font-extrabold text-[#12263A] tracking-tight leading-tight">
+                                    José Matos da Silva
+                                </h1>
+                                <p data-editable="true" class="theme-primary-text text-[14.5px] font-medium text-[#12263A] tracking-[0.26em] uppercase mt-1">
+                                    ENGENHEIRO CIVIL
+                                </p>
+                                <p data-editable="true" class="theme-primary-text text-[13.5px] italic text-[#12263A] leading-snug mt-2 font-medium max-w-sm">
+                                    Fiscalização, Gestão de Obras e<br>
+                                    Desenvolvimento de Projectos
+                                </p>
                             </div>
+
                         </div>
+
                         <div class="theme-primary-bg w-full h-[1.5px] bg-[#12263A] mt-3.5"></div>
                     </header>
 
+                    <!-- Grelha de Duas Colunas -->
                     <div class="grid grid-cols-12 gap-x-0 flex-1">
+                        
+                        <!-- COLUNA ESQUERDA (5 / 12) -->
                         <aside class="theme-primary-border col-span-5 pr-[4.5mm] border-r-[1.5px] border-[#12263A] flex flex-col justify-start gap-[2mm] pb-1">
+                            
+                            <!-- Secção: DADOS PESSOAIS -->
                             <section>
                                 <div class="flex items-center mb-1">
                                     <div class="theme-primary-border theme-primary-text w-7 h-7 rounded-full bg-white border-[2.5px] border-[#12263A] flex items-center justify-center shrink-0 z-10">
-                                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                        </svg>
                                     </div>
-                                    <div data-editable="true" class="theme-primary-bg bg-[#12263A] text-white font-bold text-[12px] tracking-wide uppercase py-1 pl-3.5 pr-5 -ml-2 flex items-center" style="clip-path: polygon(0 0, 100% 0, 92% 100%, 0% 100%);">DADOS PESSOAIS</div>
+                                    <div data-editable="true" class="theme-primary-bg bg-[#12263A] text-white font-bold text-[12px] tracking-wide uppercase py-1 pl-3.5 pr-5 -ml-2 flex items-center" style="clip-path: polygon(0 0, 100% 0, 92% 100%, 0% 100%);">
+                                        DADOS PESSOAIS
+                                    </div>
                                     <div class="bg-[#D3D7DC] h-[20px] w-6 -ml-1.5" style="clip-path: polygon(25% 0, 100% 0, 75% 100%, 0% 100%);"></div>
                                 </div>
+
                                 <ul class="space-y-1 text-[11px] leading-[1.3] text-gray-900 pl-0.5">
-                                    <li class="flex items-center gap-2"><span data-editable="true">Huambo, Angola</span></li>
-                                    <li class="flex items-center gap-2"><span data-editable="true">+244 923 965 627</span></li>
-                                    <li class="flex items-start gap-2"><div class="leading-[1.28]"><div data-editable="true">josematosd@gmail.com</div><div data-editable="true">josematosdasilva@outlook.com</div></div></li>
-                                    <li class="flex items-center gap-2"><span data-editable="true">Data de Nascimento: 21/01/1997</span></li>
-                                    <li class="flex items-center gap-2"><span data-editable="true">Nacionalidade: Angolana</span></li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="theme-primary-text w-3.5 h-3.5 text-[#12263A] shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                                        </svg>
+                                        <span data-editable="true">Huambo, Angola</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="theme-primary-text w-3.5 h-3.5 text-[#12263A] shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+                                        </svg>
+                                        <span data-editable="true">+244 923 965 627</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <svg class="theme-primary-text w-3.5 h-3.5 text-[#12263A] mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                                        </svg>
+                                        <div class="leading-[1.28]">
+                                            <div data-editable="true">josematosd@gmail.com</div>
+                                            <div data-editable="true">josematosdasilva@outlook.com</div>
+                                        </div>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="theme-primary-text w-3.5 h-3.5 text-[#12263A] shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
+                                        </svg>
+                                        <span data-editable="true">Data de Nascimento: 21/01/1997</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="theme-primary-text w-3.5 h-3.5 text-[#12263A] shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z"/>
+                                        </svg>
+                                        <span data-editable="true">Nacionalidade: Angolana</span>
+                                    </li>
                                 </ul>
                             </section>
 
+                            <!-- Secção: FORMAÇÃO ACADÉMICA -->
                             <section>
                                 <div class="flex items-center mb-1">
                                     <div class="theme-primary-border theme-primary-text w-7 h-7 rounded-full bg-white border-[2.5px] border-[#12263A] flex items-center justify-center shrink-0 z-10">
-                                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/></svg>
+                                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/>
+                                        </svg>
                                     </div>
-                                    <div data-editable="true" class="theme-primary-bg bg-[#12263A] text-white font-bold text-[12px] tracking-wide uppercase py-1 pl-3.5 pr-5 -ml-2 flex items-center" style="clip-path: polygon(0 0, 100% 0, 92% 100%, 0% 100%);">FORMAÇÃO ACADÉMICA</div>
+                                    <div data-editable="true" class="theme-primary-bg bg-[#12263A] text-white font-bold text-[12px] tracking-wide uppercase py-1 pl-3.5 pr-5 -ml-2 flex items-center" style="clip-path: polygon(0 0, 100% 0, 92% 100%, 0% 100%);">
+                                        FORMAÇÃO ACADÉMICA
+                                    </div>
                                     <div class="bg-[#D3D7DC] h-[20px] w-5 -ml-1.5" style="clip-path: polygon(25% 0, 100% 0, 75% 100%, 0% 100%);"></div>
                                 </div>
+
                                 <div class="space-y-1 text-[11px] leading-[1.3] text-gray-900 pl-1">
-                                    <div class="flex items-start gap-2"><span class="theme-primary-bg w-1.5 h-1.5 bg-[#12263A] mt-1.5 shrink-0"></span><div><h3 data-editable="true" class="font-bold text-gray-900 leading-snug">Licenciatura em Engenharia Civil</h3><p data-editable="true" class="text-[11px] text-gray-700">Instituto Superior Politécnico do Huambo (ISPH)</p><span data-editable="true" class="theme-secondary-text font-semibold text-[10px] text-[#1E3A5F]">Conclusão: 2021</span></div></div>
-                                    <div class="flex items-start gap-2"><span class="theme-primary-bg w-1.5 h-1.5 bg-[#12263A] mt-1.5 shrink-0"></span><div><h3 data-editable="true" class="font-bold text-gray-900 leading-snug">Licenciatura em Informática</h3><p data-editable="true" class="text-[11px] text-gray-700">Instituto Superior Politécnico Lusíada (ISPL)</p><span data-editable="true" class="theme-secondary-text font-semibold text-[10px] text-[#1E3A5F]">Conclusão: 1.º Ano – 2020</span></div></div>
-                                    <div class="flex items-start gap-2"><span class="theme-primary-bg w-1.5 h-1.5 bg-[#12263A] mt-1.5 shrink-0"></span><div><h3 data-editable="true" class="font-bold text-gray-900 leading-snug">Técnico em Construção Civil</h3><p data-editable="true" class="text-[11px] text-gray-700">Complexo Escolar Politécnico Privado do Huambo</p><span data-editable="true" class="theme-secondary-text font-semibold text-[10px] text-[#1E3A5F]">Conclusão: 2013</span></div></div>
-                                </div>
-                            </section>
-
-                            <section>
-                                <div class="flex items-center mb-1">
-                                    <div class="theme-primary-border theme-primary-text w-7 h-7 rounded-full bg-white border-[2.5px] border-[#12263A] flex items-center justify-center shrink-0 z-10">
-                                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 00.12-.61l-1.92-3.32a.488.488 0 00-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 00-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 00-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+                                    <div class="flex items-start gap-2">
+                                        <span class="theme-primary-bg w-1.5 h-1.5 bg-[#12263A] mt-1.5 shrink-0"></span>
+                                        <div class="space-y-0.5">
+                                            <h3 data-editable="true" class="font-bold text-gray-900 leading-snug">Licenciatura em Engenharia Civil</h3>
+                                            <p data-editable="true" class="text-[11px] text-gray-700 leading-snug">Instituto Superior Politécnico do Huambo (ISPH)</p>
+                                            <span data-editable="true" class="theme-secondary-text block font-semibold text-[10px] text-[#1E3A5F]">Conclusão: 2021</span>
+                                        </div>
                                     </div>
-                                    <div data-editable="true" class="theme-primary-bg bg-[#12263A] text-white font-bold text-[12px] tracking-wide uppercase py-1 pl-3.5 pr-5 -ml-2 flex items-center" style="clip-path: polygon(0 0, 100% 0, 93% 100%, 0% 100%);">COMPETÊNCIAS TÉCNICAS</div>
-                                    <div class="bg-[#D3D7DC] h-[20px] w-5 -ml-1.5" style="clip-path: polygon(25% 0, 100% 0, 75% 100%, 0% 100%);"></div>
-                                </div>
-                                <ul id="tech-skills-list" class="space-y-1 text-[11px] leading-[1.3] text-gray-900 pl-1">
-                                    <li class="flex items-start gap-2"><span class="theme-primary-bg w-1.5 h-1.5 bg-[#12263A] mt-1.5 shrink-0"></span><span data-editable="true">Fiscalização e Acompanhamento de Obras</span></li>
-                                    <li class="flex items-start gap-2"><span class="theme-primary-bg w-1.5 h-1.5 bg-[#12263A] mt-1.5 shrink-0"></span><span data-editable="true">Planeamento e Gestão de Projectos</span></li>
-                                    <li class="flex items-start gap-2"><span class="theme-primary-bg w-1.5 h-1.5 bg-[#12263A] mt-1.5 shrink-0"></span><span data-editable="true">Controlo de Qualidade e Medições</span></li>
-                                    <li class="flex items-start gap-2"><span class="theme-primary-bg w-1.5 h-1.5 bg-[#12263A] mt-1.5 shrink-0"></span><span data-editable="true">AutoCAD, SketchUp, MS Office & Project</span></li>
-                                </ul>
-                            </section>
 
-                            <section>
-                                <div class="flex items-center mb-1">
-                                    <div class="theme-primary-border theme-primary-text w-7 h-7 rounded-full bg-white border-[2.5px] border-[#12263A] flex items-center justify-center shrink-0 z-10">
-                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3.6 9h16.8M3.6 15h16.8M11.5 3a17 17 0 000 18M12.5 3a17 17 0 010 18"/></svg>
+                                    <div class="flex items-start gap-2">
+                                        <span class="theme-primary-bg w-1.5 h-1.5 bg-[#12263A] mt-1.5 shrink-0"></span>
+                                        <div class="space-y-0.5">
+                                            <h3 data-editable="true" class="font-bold text-gray-900 leading-snug">Licenciatura em Informática</h3>
+                                            <p data-editable="true" class="text-[11px] text-gray-700 leading-snug">Instituto Superior Politécnico Lusíada (ISPL)</p>
+                                            <span data-editable="true" class="theme-secondary-text block font-semibold text-[10px] text-[#1E3A5F]">Conclusão: 1.º Ano – 2020</span>
+                                        </div>
                                     </div>
-                                    <div data-editable="true" class="theme-primary-bg bg-[#12263A] text-white font-bold text-[12px] tracking-wide uppercase py-1 pl-3.5 pr-6 -ml-2 flex items-center" style="clip-path: polygon(0 0, 100% 0, 90% 100%, 0% 100%);">IDIOMAS</div>
-                                    <div class="bg-[#D3D7DC] h-[20px] w-6 -ml-1.5" style="clip-path: polygon(25% 0, 100% 0, 75% 100%, 0% 100%);"></div>
-                                </div>
-                                <div class="space-y-1 text-[11px] leading-[1.3] text-gray-900 pl-1">
-                                    <div class="grid grid-cols-12"><span data-editable="true" class="col-span-5 font-semibold">Português</span><span data-editable="true" class="col-span-7">– &nbsp;Fluente</span></div>
-                                    <div class="grid grid-cols-12"><span data-editable="true" class="col-span-5 font-semibold">Inglês</span><span data-editable="true" class="col-span-7">– &nbsp;Intermédio</span></div>
-                                </div>
-                            </section>
-                        </aside>
 
-                        <main class="col-span-7 pl-[5.5mm] flex flex-col justify-between pb-1">
-                            <section>
-                                <div class="flex items-center mb-1">
-                                    <div class="theme-primary-border theme-primary-text w-6 h-6 rounded-full bg-white border-[2px] border-[#12263A] flex items-center justify-center shrink-0 z-10">
-                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" d="M15 9l5-5m0 0h-3m3 0v3"/></svg>
+                                    <div class="flex items-start gap-2">
+                                        <span class="theme-primary-bg w-1.5 h-1.5 bg-[#12263A] mt-1.5 shrink-0"></span>
+                                        <div class="space-y-0.5">
+                                            <h3 data-editable="true" class="font-bold text-gray-900 leading-snug">Técnico em Construção Civil</h3>
+                                            <p data-editable="true" class="text-[11px] text-gray-700 leading-snug">Complexo Escolar Politécnico Privado do Huambo</p>
+                                            <span data-editable="true" class="theme-secondary-text block font-semibold text-[10px] text-[#1E3A5F]">Conclusão: 2013</span>
+                                        </div>
                                     </div>
-                                    <div data-editable="true" class="theme-primary-bg bg-[#12263A] text-white font-bold text-[11px] tracking-wide uppercase py-0.5 pl-3.5 pr-6 -ml-2 flex items-center" style="clip-path: polygon(0 0, 100% 0, 93% 100%, 0% 100%);">PERFIL PROFISSIONAL</div>
-                                </div>
-                                <p data-editable="true" class="text-[11px] text-gray-900 leading-[1.34] text-justify">
-                                    Engenheiro Civil, com sólida experiência em fiscalização e acompanhamento de obras, aliando conhecimento técnico, rigor e elevado sentido de responsabilidade. Possuo competências comprovadas na gestão e controlo de projectos de infra-estruturas, com foco na qualidade, cumprimento de prazos e optimização de recursos.
-                                </p>
-                            </section>
 
-                            <section>
-                                <div class="flex items-center mb-1">
-                                    <div class="theme-primary-border theme-primary-text w-6 h-6 rounded-full bg-white border-[2px] border-[#12263A] flex items-center justify-center shrink-0 z-10">
-                                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg>
-                                    </div>
-                                    <div data-editable="true" class="theme-primary-bg bg-[#12263A] text-white font-bold text-[11px] tracking-wide uppercase py-0.5 pl-3.5 pr-6 -ml-2 flex items-center" style="clip-path: polygon(0 0, 100% 0, 94% 100%, 0% 100%);">EXPERIÊNCIA PROFISSIONAL</div>
-                                </div>
-                                <div class="space-y-1">
-                                    <div>
-                                        <div class="flex justify-between items-baseline gap-2"><h3 data-editable="true" class="font-bold text-[11px] text-gray-900 leading-tight">Director de Obras e Fiscalização</h3><span data-editable="true" class="font-semibold text-[11px] text-gray-900 shrink-0">2023 – 2026</span></div>
-                                        <p data-editable="true" class="theme-secondary-text text-[11px] font-semibold text-[#1E3A5F] leading-tight mb-0.5">MANUTEC-PREV, LDA</p>
-                                        <ul class="space-y-0.5 text-[11px] leading-[1.32] text-gray-900 pl-1">
-                                            <li class="flex items-start gap-1.5"><span class="theme-primary-bg w-1 h-1 bg-[#12263A] mt-1.5 shrink-0"></span><span data-editable="true">Fiscalização e acompanhamento de empreitadas e infra-estruturas públicas em Huambo.</span></li>
+                                    <div class="pt-1 border-t border-slate-200/80">
+                                        <p data-editable="true" class="theme-secondary-text font-bold text-[11px] uppercase tracking-wide text-[#1E3A5F] mb-1">Formação Complementar</p>
+                                        <ul class="space-y-1.5 text-[11px] leading-[1.35]">
+                                            <li class="flex items-start gap-2">
+                                                <span class="theme-primary-bg w-1.5 h-1.5 bg-[#12263A] mt-1.5 shrink-0"></span>
+                                                <span data-editable="true"><strong>Generative AI for Software Development</strong> – DeepLearning.AI / Coursera | 2026</span>
+                                            </li>
+                                            <li class="flex items-start gap-2">
+                                                <span class="theme-primary-bg w-1.5 h-1.5 bg-[#12263A] mt-1.5 shrink-0"></span>
+                                                <span data-editable="true"><strong>AI Technologies for Architectural Visualization</strong> – London School of International Business | 2026</span>
+                                            </li>
                                         </ul>
                                     </div>
                                 </div>
                             </section>
 
+                            <!-- Secção: COMPETÊNCIAS TÉCNICAS -->
+                            <section>
+                                <div class="flex items-center mb-1">
+                                    <div class="theme-primary-border theme-primary-text w-7 h-7 rounded-full bg-white border-[2.5px] border-[#12263A] flex items-center justify-center shrink-0 z-10">
+                                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 00.12-.61l-1.92-3.32a.488.488 0 00-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 00-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 00-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
+                                        </svg>
+                                    </div>
+                                    <div data-editable="true" class="theme-primary-bg bg-[#12263A] text-white font-bold text-[12px] tracking-wide uppercase py-1 pl-3.5 pr-5 -ml-2 flex items-center" style="clip-path: polygon(0 0, 100% 0, 93% 100%, 0% 100%);">
+                                        COMPETÊNCIAS TÉCNICAS
+                                    </div>
+                                    <div class="bg-[#D3D7DC] h-[20px] w-5 -ml-1.5" style="clip-path: polygon(25% 0, 100% 0, 75% 100%, 0% 100%);"></div>
+                                </div>
+
+                                <ul id="tech-skills-list" class="space-y-1 text-[11px] leading-[1.3] text-gray-900 pl-1">
+                                    <li class="flex items-start gap-2"><span class="theme-primary-bg w-1.5 h-1.5 bg-[#12263A] mt-1.5 shrink-0"></span><span data-editable="true">Fiscalização/Acompanhamento de Obras</span></li>
+                                    <li class="flex items-start gap-2"><span class="theme-primary-bg w-1.5 h-1.5 bg-[#12263A] mt-1.5 shrink-0"></span><span data-editable="true">Planeamento e Gestão de Projectos</span></li>
+                                    <li class="flex items-start gap-2"><span class="theme-primary-bg w-1.5 h-1.5 bg-[#12263A] mt-1.5 shrink-0"></span><span data-editable="true">Controlo de Qualidade</span></li>
+                                    <li class="flex items-start gap-2"><span class="theme-primary-bg w-1.5 h-1.5 bg-[#12263A] mt-1.5 shrink-0"></span><span data-editable="true">Execução de Medições | Autos de obras</span></li>
+                                    <li class="flex items-start gap-2"><span class="theme-primary-bg w-1.5 h-1.5 bg-[#12263A] mt-1.5 shrink-0"></span><span data-editable="true">Leitura e Interpretação de Projectos</span></li>
+                                    <li class="flex items-start gap-2"><span class="theme-primary-bg w-1.5 h-1.5 bg-[#12263A] mt-1.5 shrink-0"></span><span data-editable="true">Relatórios, Pareceres e Dashboards Avançados</span></li>
+                                    <li class="flex items-start gap-2"><span class="theme-primary-bg w-1.5 h-1.5 bg-[#12263A] mt-1.5 shrink-0"></span><span data-editable="true">Gestão de Equipas e Empreiteiros</span></li>
+                                    <li class="flex items-start gap-2"><span class="theme-primary-bg w-1.5 h-1.5 bg-[#12263A] mt-1.5 shrink-0"></span><span data-editable="true">Conhecimento da Lei 41/20</span></li>
+                                    <li class="flex items-start gap-2"><span class="theme-primary-bg w-1.5 h-1.5 bg-[#12263A] mt-1.5 shrink-0"></span><span data-editable="true">AutoCAD, SketchUp, 3D Software Rendering</span></li>
+                                    <li class="flex items-start gap-2"><span class="theme-primary-bg w-1.5 h-1.5 bg-[#12263A] mt-1.5 shrink-0"></span><span data-editable="true">Microsoft Office 365 (Word, Excel, Project)</span></li>
+                                </ul>
+                            </section>
+
+                            <!-- Secção: COMPETÊNCIAS PESSOAIS -->
+                            <section>
+                                <div class="flex items-center mb-1">
+                                    <div class="theme-primary-border theme-primary-text w-7 h-7 rounded-full bg-white border-[2.5px] border-[#12263A] flex items-center justify-center shrink-0 z-10">
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5v-1a1.5 1.5 0 013 0v1m0 0V11m0-5.5a1.5 1.5 0 013 0v3m0 0V11"/>
+                                        </svg>
+                                    </div>
+                                    <div data-editable="true" class="theme-primary-bg bg-[#12263A] text-white font-bold text-[12px] tracking-wide uppercase py-1 pl-3.5 pr-5 -ml-2 flex items-center" style="clip-path: polygon(0 0, 100% 0, 93% 100%, 0% 100%);">
+                                        COMPETÊNCIAS PESSOAIS
+                                    </div>
+                                    <div class="bg-[#D3D7DC] h-[20px] w-5 -ml-1.5" style="clip-path: polygon(25% 0, 100% 0, 75% 100%, 0% 100%);"></div>
+                                </div>
+
+                                <ul id="soft-skills-list" class="space-y-1 text-[11px] leading-[1.3] text-gray-900 pl-1">
+                                    <li class="flex items-start gap-2"><span class="theme-primary-bg w-1.5 h-1.5 bg-[#12263A] mt-1.5 shrink-0"></span><span data-editable="true">Liderança e Trabalho em Equipa</span></li>
+                                    <li class="flex items-start gap-2"><span class="theme-primary-bg w-1.5 h-1.5 bg-[#12263A] mt-1.5 shrink-0"></span><span data-editable="true">Comunicação Eficaz</span></li>
+                                    <li class="flex items-start gap-2"><span class="theme-primary-bg w-1.5 h-1.5 bg-[#12263A] mt-1.5 shrink-0"></span><span data-editable="true">Resolução de Problemas</span></li>
+                                    <li class="flex items-start gap-2"><span class="theme-primary-bg w-1.5 h-1.5 bg-[#12263A] mt-1.5 shrink-0"></span><span data-editable="true">Responsabilidade e Ética Profissional</span></li>
+                                    <li class="flex items-start gap-2"><span class="theme-primary-bg w-1.5 h-1.5 bg-[#12263A] mt-1.5 shrink-0"></span><span data-editable="true">Orientação para Resultados</span></li>
+                                    <li class="flex items-start gap-2"><span class="theme-primary-bg w-1.5 h-1.5 bg-[#12263A] mt-1.5 shrink-0"></span><span data-editable="true">Adaptabilidade</span></li>
+                                </ul>
+                            </section>
+
+                            <!-- Secção: IDIOMAS -->
+                            <section>
+                                <div class="flex items-center mb-1">
+                                    <div class="theme-primary-border theme-primary-text w-7 h-7 rounded-full bg-white border-[2.5px] border-[#12263A] flex items-center justify-center shrink-0 z-10">
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                            <circle cx="12" cy="12" r="9"/>
+                                            <path d="M3.6 9h16.8M3.6 15h16.8M11.5 3a17 17 0 000 18M12.5 3a17 17 0 010 18"/>
+                                        </svg>
+                                    </div>
+                                    <div data-editable="true" class="theme-primary-bg bg-[#12263A] text-white font-bold text-[12px] tracking-wide uppercase py-1 pl-3.5 pr-6 -ml-2 flex items-center" style="clip-path: polygon(0 0, 100% 0, 90% 100%, 0% 100%);">
+                                        IDIOMAS
+                                    </div>
+                                    <div class="bg-[#D3D7DC] h-[20px] w-6 -ml-1.5" style="clip-path: polygon(25% 0, 100% 0, 75% 100%, 0% 100%);"></div>
+                                </div>
+
+                                <div class="space-y-1 text-[11px] leading-[1.3] text-gray-900 pl-1">
+                                    <div class="grid grid-cols-12">
+                                        <span data-editable="true" class="col-span-5 font-semibold">Português</span>
+                                        <span data-editable="true" class="col-span-7">– &nbsp;Fluente</span>
+                                    </div>
+                                    <div class="grid grid-cols-12">
+                                        <span data-editable="true" class="col-span-5 font-semibold">Inglês</span>
+                                        <span data-editable="true" class="col-span-7">– &nbsp;Intermédio</span>
+                                    </div>
+                                    <div class="grid grid-cols-12">
+                                        <span data-editable="true" class="col-span-5 font-semibold">Espanhol</span>
+                                        <span data-editable="true" class="col-span-7">– &nbsp;Básico</span>
+                                    </div>
+                                </div>
+                            </section>
+
+                        </aside>
+
+                        <!-- COLUNA DIREITA (7 / 12) -->
+                        <main class="col-span-7 pl-[5.5mm] flex flex-col justify-between pb-1">
+                            
+                            <!-- Secção: PERFIL PROFISSIONAL -->
                             <section>
                                 <div class="flex items-center mb-1">
                                     <div class="theme-primary-border theme-primary-text w-6 h-6 rounded-full bg-white border-[2px] border-[#12263A] flex items-center justify-center shrink-0 z-10">
-                                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                            <circle cx="12" cy="12" r="8"/>
+                                            <circle cx="12" cy="12" r="4"/>
+                                            <path stroke-linecap="round" d="M15 9l5-5m0 0h-3m3 0v3"/>
+                                        </svg>
                                     </div>
-                                    <div data-editable="true" class="theme-primary-bg bg-[#12263A] text-white font-bold text-[11px] tracking-wide uppercase py-0.5 pl-3.5 pr-6 -ml-2 flex items-center" style="clip-path: polygon(0 0, 100% 0, 94% 100%, 0% 100%);">INFORMAÇÕES ADICIONAIS</div>
+                                    <div data-editable="true" class="theme-primary-bg bg-[#12263A] text-white font-bold text-[11px] tracking-wide uppercase py-0.5 pl-3.5 pr-6 -ml-2 flex items-center" style="clip-path: polygon(0 0, 100% 0, 93% 100%, 0% 100%);">
+                                        PERFIL PROFISSIONAL
+                                    </div>
                                 </div>
-                                <ul id="additional-list" class="space-y-0.5 text-[11px] leading-[1.28] text-gray-900 pl-1">
-                                    <li class="flex items-start gap-1.5"><span class="theme-primary-text w-3 h-3 text-[#12263A] mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">✓</span><span data-editable="true">Disponibilidade imediata para novos desafios profissionais.</span></li>
+
+                                <p data-editable="true" class="text-[11px] text-gray-900 leading-[1.34] text-justify">
+                                    Engenheiro Civil, com sólida experiência em fiscalização e acompanhamento de obras, aliando conhecimento técnico, rigor e elevado sentido de responsabilidade. Possuo competências comprovadas na gestão e controlo de projectos de infra-estruturas, com foco na qualidade, cumprimento de prazos e optimização de recursos.
+                                </p>
+                            </section>
+
+                            <!-- Secção: EXPERIÊNCIA PROFISSIONAL -->
+                            <section>
+                                <div class="flex items-center mb-1">
+                                    <div class="theme-primary-border theme-primary-text w-6 h-6 rounded-full bg-white border-[2px] border-[#12263A] flex items-center justify-center shrink-0 z-10">
+                                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/>
+                                        </svg>
+                                    </div>
+                                    <div data-editable="true" class="theme-primary-bg bg-[#12263A] text-white font-bold text-[11px] tracking-wide uppercase py-0.5 pl-3.5 pr-6 -ml-2 flex items-center" style="clip-path: polygon(0 0, 100% 0, 94% 100%, 0% 100%);">
+                                        EXPERIÊNCIA PROFISSIONAL
+                                    </div>
+                                </div>
+
+                                <div class="space-y-1">
+                                    <!-- Experiência 1: MANUTEC-PREV,LDA -->
+                                    <div>
+                                        <div class="flex justify-between items-baseline gap-2">
+                                            <h3 data-editable="true" class="font-bold text-[11px] text-gray-900 leading-tight">Director de Obras e Fiscalização</h3>
+                                            <span data-editable="true" class="font-semibold text-[11px] text-gray-900 shrink-0">2023 – 2026</span>
+                                        </div>
+                                        <p data-editable="true" class="theme-secondary-text text-[11px] font-semibold text-[#1E3A5F] leading-tight mb-0.5">
+                                            MANUTEC-PREV,LDA
+                                        </p>
+                                        <ul class="space-y-0.5 text-[11px] leading-[1.32] text-gray-900 pl-1">
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="theme-primary-bg w-1 h-1 bg-[#12263A] mt-1.5 shrink-0"></span>
+                                                <span data-editable="true">Direcção, coordenação de equipas, gestão de fornecedores e controlo da qualidade das empreitadas no Hospital Sanatório Huambo (2026).</span>
+                                            </li>
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="theme-primary-bg w-1 h-1 bg-[#12263A] mt-1.5 shrink-0"></span>
+                                                <span data-editable="true">Manutenção e Requalificação das casas Protocolares do Governo Provincial Bengo (2025).</span>
+                                            </li>
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="theme-primary-bg w-1 h-1 bg-[#12263A] mt-1.5 shrink-0"></span>
+                                                <span data-editable="true">Construção e apetrechamento da Escola Primária n.º 2040 – Cavongue (2025–2026).</span>
+                                            </li>
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="theme-primary-bg w-1 h-1 bg-[#12263A] mt-1.5 shrink-0"></span>
+                                                <span data-editable="true">Fiscalização da obra de iluminação pública, troço Rotunda de São João – Hospital do Cambiote (2024–2025).</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <!-- Experiência 2: CISA -->
+                                    <div>
+                                        <div class="flex justify-between items-baseline gap-2">
+                                            <h3 data-editable="true" class="font-bold text-[11px] text-gray-900 leading-tight">Director de Fiscalização</h3>
+                                            <span data-editable="true" class="font-semibold text-[11px] text-gray-900 shrink-0">2026</span>
+                                        </div>
+                                        <p data-editable="true" class="theme-secondary-text text-[11px] font-semibold text-[#1E3A5F] leading-tight mb-0.5">
+                                            CISA - Empreendimentos e Serviços, LDA
+                                        </p>
+                                        <ul class="space-y-0.5 text-[11px] leading-[1.32] text-gray-900 pl-1">
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="theme-primary-bg w-1 h-1 bg-[#12263A] mt-1.5 shrink-0"></span>
+                                                <span data-editable="true">Construção de 5 km de infra-estruturas integradas na sede do Município do Ukuma, Huambo.</span>
+                                            </li>
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="theme-primary-bg w-1 h-1 bg-[#12263A] mt-1.5 shrink-0"></span>
+                                                <span data-editable="true">Fiscalização e assessoria técnica assistida nas obras do Projecto SAMAP – IDA, Kwanza Sul e Kwanza Norte.</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <!-- Experiência 3: PDAC -->
+                                    <div>
+                                        <div class="flex justify-between items-baseline gap-2">
+                                            <h3 data-editable="true" class="font-bold text-[11px] text-gray-900 leading-tight">Encarregado de Fiscalização</h3>
+                                            <span data-editable="true" class="font-semibold text-[11px] text-gray-900 shrink-0">2025 – 2026</span>
+                                        </div>
+                                        <p data-editable="true" class="theme-secondary-text text-[11px] font-semibold text-[#1E3A5F] leading-tight mb-0.5">
+                                            PDAC – Ministério da Agricultura e Florestas
+                                        </p>
+                                        <ul class="space-y-0.5 text-[11px] leading-[1.32] text-gray-900 pl-1">
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="theme-primary-bg w-1 h-1 bg-[#12263A] mt-1.5 shrink-0"></span>
+                                                <span data-editable="true">Fiscal do PDAC, representante das áreas de Infra-estruturas e GEPE do Ministério da Agricultura e Florestas.</span>
+                                            </li>
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="theme-primary-bg w-1 h-1 bg-[#12263A] mt-1.5 shrink-0"></span>
+                                                <span data-editable="true">Extensão da rede pública de energia eléctrica no IIV – Huambo.</span>
+                                            </li>
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="theme-primary-bg w-1 h-1 bg-[#12263A] mt-1.5 shrink-0"></span>
+                                                <span data-editable="true">Construção de 12 naves para recria de aves no IIV – Huambo.</span>
+                                            </li>
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="theme-primary-bg w-1 h-1 bg-[#12263A] mt-1.5 shrink-0"></span>
+                                                <span data-editable="true">Revisão do sistema de distribuição de água potável do IIV – Huambo.</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <!-- Experiência 4: ESCALA URBANA -->
+                                    <div>
+                                        <div class="flex justify-between items-baseline gap-2">
+                                            <h3 data-editable="true" class="font-bold text-[11px] text-gray-900 leading-tight">Fiscal de Obras</h3>
+                                            <span data-editable="true" class="font-semibold text-[11px] text-gray-900 shrink-0">2023</span>
+                                        </div>
+                                        <p data-editable="true" class="theme-secondary-text text-[11px] font-semibold text-[#1E3A5F] leading-tight mb-0.5">
+                                            ESCALA URBANA
+                                        </p>
+                                        <ul class="space-y-0.5 text-[11px] leading-[1.32] text-gray-900 pl-1">
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="theme-primary-bg w-1 h-1 bg-[#12263A] mt-1.5 shrink-0"></span>
+                                                <span data-editable="true">Fiscalização de projectos do PIIM no Município do Bailundo.</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <!-- Experiência 5: VIBEL -->
+                                    <div>
+                                        <div class="flex justify-between items-baseline gap-2">
+                                            <h3 data-editable="true" class="font-bold text-[11px] text-gray-900 leading-tight">Gestor de Equipa</h3>
+                                            <span data-editable="true" class="font-semibold text-[11px] text-gray-900 shrink-0">2022</span>
+                                        </div>
+                                        <p data-editable="true" class="theme-secondary-text text-[11px] font-semibold text-[#1E3A5F] leading-tight mb-0.5">
+                                            VIBEL
+                                        </p>
+                                        <ul class="space-y-0.5 text-[11px] leading-[1.32] text-gray-900 pl-1">
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="theme-primary-bg w-1 h-1 bg-[#12263A] mt-1.5 shrink-0"></span>
+                                                <span data-editable="true">Coordenação de equipa no projecto de impermeabilização da Assembleia Municipal do Bailundo.</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <!-- Secção: REALIZAÇÕES E DESTAQUES -->
+                            <section>
+                                <div class="flex items-center mb-1">
+                                    <div class="theme-primary-border theme-primary-text w-6 h-6 rounded-full bg-white border-[2px] border-[#12263A] flex items-center justify-center shrink-0 z-10">
+                                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M5 9.2h3V19H5zM10.6 5h2.8v14h-2.8zm5.6 8H19v6h-2.8z"/>
+                                        </svg>
+                                    </div>
+                                    <div data-editable="true" class="theme-primary-bg bg-[#12263A] text-white font-bold text-[11px] tracking-wide uppercase py-0.5 pl-3.5 pr-6 -ml-2 flex items-center" style="clip-path: polygon(0 0, 100% 0, 94% 100%, 0% 100%);">
+                                        REALIZAÇÕES E DESTAQUES
+                                    </div>
+                                </div>
+
+                                <ul id="achievements-list" class="space-y-0.5 text-[11px] leading-[1.28] text-gray-900 pl-1">
+                                    <li class="flex items-start gap-1.5">
+                                        <svg class="theme-primary-text w-3 h-3 text-[#12263A] mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                        <span data-editable="true">Contribuição significativa para o avanço físico-financeiro de projectos estratégicos.</span>
+                                    </li>
+                                    <li class="flex items-start gap-1.5">
+                                        <svg class="theme-primary-text w-3 h-3 text-[#12263A] mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                        <span data-editable="true">Participação na execução e entrega de mais de 6 projectos.</span>
+                                    </li>
+                                    <li class="flex items-start gap-1.5">
+                                        <svg class="theme-primary-text w-3 h-3 text-[#12263A] mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                        <span data-editable="true">Cumprimento dos padrões de qualidade e segurança em obra.</span>
+                                    </li>
+                                    <li class="flex items-start gap-1.5">
+                                        <svg class="theme-primary-text w-3 h-3 text-[#12263A] mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                        <span data-editable="true">Participação activa na resolução de constrangimentos técnicos e financeiros.</span>
+                                    </li>
                                 </ul>
                             </section>
+
+                            <!-- Secção: INFORMAÇÕES ADICIONAIS -->
+                            <section>
+                                <div class="flex items-center mb-1">
+                                    <div class="theme-primary-border theme-primary-text w-6 h-6 rounded-full bg-white border-[2px] border-[#12263A] flex items-center justify-center shrink-0 z-10">
+                                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
+                                        </svg>
+                                    </div>
+                                    <div data-editable="true" class="theme-primary-bg bg-[#12263A] text-white font-bold text-[11px] tracking-wide uppercase py-0.5 pl-3.5 pr-6 -ml-2 flex items-center" style="clip-path: polygon(0 0, 100% 0, 94% 100%, 0% 100%);">
+                                        INFORMAÇÕES ADICIONAIS
+                                    </div>
+                                </div>
+
+                                <ul id="additional-list" class="space-y-0.5 text-[11px] leading-[1.28] text-gray-900 pl-1">
+                                    <li class="flex items-start gap-1.5">
+                                        <svg class="theme-primary-text w-3 h-3 text-[#12263A] mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                        <span data-editable="true">Disponibilidade imediata para novos desafios.</span>
+                                    </li>
+                                    <li class="flex items-start gap-1.5">
+                                        <svg class="theme-primary-text w-3 h-3 text-[#12263A] mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                        <span data-editable="true">Carta de condução: Categoria B.</span>
+                                    </li>
+                                    <li class="flex items-start gap-1.5">
+                                        <svg class="theme-primary-text w-3 h-3 text-[#12263A] mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                        <span data-editable="true">Disponibilidade para deslocações nacionais e internacionais.</span>
+                                    </li>
+                                </ul>
+                            </section>
+
                         </main>
                     </div>
                 </div>
 
+                <!-- Rodapé com Formas Geométricas Decorativas -->
                 <footer class="relative w-full h-[14mm] shrink-0 pointer-events-none select-none">
                     <div class="absolute bottom-0 left-0 w-[85mm] h-[24mm]">
                         <svg viewBox="0 0 340 95" class="w-full h-full" preserveAspectRatio="none">
                             <polygon points="0,0 245,45 0,45" fill="#D3D7DC" />
                             <polygon class="svg-primary-fill" points="0,48 242,48 270,74 0,74" fill="#12263A" />
+                            <polygon points="252,52 282,52 310,74 280,74" fill="#AEB4BC" />
+                        </svg>
+                    </div>
+                    <div class="theme-primary-bg absolute bottom-2.5 left-8 right-44 h-[1.5px] bg-[#12263A]"></div>
+                    <div class="absolute bottom-1.5 right-4 w-[40mm] h-[8mm]">
+                        <svg viewBox="0 0 160 32" class="w-full h-full" preserveAspectRatio="none">
+                            <polygon class="svg-primary-fill" points="30,0 72,0 44,32 2,32" fill="#12263A" />
+                            <polygon points="82,0 116,0 88,32 54,32" fill="#AEB4BC" />
+                            <polygon points="124,0 156,0 128,32 96,32" fill="#D3D7DC" />
                         </svg>
                     </div>
                 </footer>
+
             </div>
         </div>
     </div>
 
+    <!-- BOTÃO FLUTUANTE DE IMPRESSÃO PARA VISITANTES -->
+    <div id="floating-print-btn" class="fixed bottom-6 right-6 z-40">
+        <button type="button" onclick="printCV()" class="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-4 py-3 rounded-full shadow-2xl font-bold text-xs transition cursor-pointer">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
+            </svg>
+            <span>Imprimir Currículo / PDF</span>
+        </button>
+    </div>
+
     <script>
-        // PALAVRA-PASSE DE ADMINISTRADOR (Pode alterar aqui para a que preferir)
         const ADMIN_PASSWORD = "EngMatos2026"; 
 
         let isEditMode = false;
@@ -447,7 +805,6 @@
             loadSavedData();
             fitToScreen();
 
-            // Verificar se já autenticado na sessão atual
             if (sessionStorage.getItem('cv_admin_unlocked') === 'true') {
                 unlockAdminUI();
             }
@@ -564,8 +921,13 @@
             const list = document.getElementById(listId);
             if (!list) return;
             const li = document.createElement('li');
-            li.className = 'flex items-start gap-2';
-            li.innerHTML = `<span class="theme-primary-text text-xs font-bold" style="color: ${currentPrimaryColor};">✓</span><span data-editable="true" contenteditable="true">Novo item</span>`;
+            li.className = 'flex items-start gap-1.5';
+            li.innerHTML = `
+                <svg class="theme-primary-text w-3 h-3 text-[#12263A] mt-0.5 shrink-0" style="color: ${currentPrimaryColor};" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                </svg>
+                <span data-editable="true" contenteditable="true">Novo item</span>
+            `;
             list.appendChild(li);
             li.querySelector('span[data-editable]').focus();
         }
