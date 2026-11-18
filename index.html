@@ -105,6 +105,7 @@
             #top-toolbar,
             #toast-notification,
             #auth-modal,
+            #floating-print-btn,
             .photo-overlay,
             .photo-remove-btn,
             .no-print {
@@ -278,45 +279,55 @@
                     
                     <!-- Cabeçalho -->
                     <header class="mb-[3mm]">
-                        <div class="flex items-center gap-[5mm]">
+                        <div class="flex items-center justify-between gap-[4mm]">
                             
-                            <div id="photo-wrapper" class="no-photo relative shrink-0 group">
-                                <div class="photo-decor theme-primary-bg absolute -top-[1.5mm] -left-[1.5mm] w-[10mm] h-[10mm] bg-[#12263A] pointer-events-none"></div>
-                                <div class="photo-decor absolute -bottom-[1.5mm] -right-[1.5mm] w-[14mm] h-[4mm] bg-[#AEB4BC] pointer-events-none"></div>
+                            <div class="flex items-center gap-[5mm] flex-1 min-w-0">
+                                <div id="photo-wrapper" class="no-photo relative shrink-0 group">
+                                    <div class="photo-decor theme-primary-bg absolute -top-[1.5mm] -left-[1.5mm] w-[10mm] h-[10mm] bg-[#12263A] pointer-events-none"></div>
+                                    <div class="photo-decor absolute -bottom-[1.5mm] -right-[1.5mm] w-[14mm] h-[4mm] bg-[#AEB4BC] pointer-events-none"></div>
 
-                                <div id="photo-frame-box" onclick="triggerPhotoUpload()" title="Clique para carregar foto de perfil" class="photo-frame theme-primary-border relative w-[29mm] h-[29mm] bg-slate-50 border-[2px] border-transparent overflow-hidden cursor-pointer flex items-center justify-center shadow-sm">
-                                    <div id="photo-placeholder" class="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 text-[#12263A] relative">
-                                        <div class="photo-corner-decor absolute top-0 right-0 w-4 h-4 bg-[#D3D7DC]/60" style="clip-path: polygon(0 0, 100% 0, 100% 100%);"></div>
-                                        <svg class="theme-primary-text w-10 h-10 text-[#12263A]/45" viewBox="0 0 24 24" fill="currentColor">
-                                            <path d="M12 12c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm0 2.5c-3.33 0-10 1.67-10 5V22h20v-2.5c0-3.33-6.67-5-10-5z"/>
-                                        </svg>
-                                        <span class="no-print text-[8px] font-semibold uppercase tracking-wider text-slate-500 mt-0.5">Foto (Opcional)</span>
+                                    <div id="photo-frame-box" onclick="triggerPhotoUpload()" title="Clique para carregar foto de perfil" class="photo-frame theme-primary-border relative w-[29mm] h-[29mm] bg-slate-50 border-[2px] border-transparent overflow-hidden cursor-pointer flex items-center justify-center shadow-sm">
+                                        <div id="photo-placeholder" class="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 text-[#12263A] relative">
+                                            <div class="photo-corner-decor absolute top-0 right-0 w-4 h-4 bg-[#D3D7DC]/60" style="clip-path: polygon(0 0, 100% 0, 100% 100%);"></div>
+                                            <svg class="theme-primary-text w-10 h-10 text-[#12263A]/45" viewBox="0 0 24 24" fill="currentColor">
+                                                <path d="M12 12c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm0 2.5c-3.33 0-10 1.67-10 5V22h20v-2.5c0-3.33-6.67-5-10-5z"/>
+                                            </svg>
+                                            <span class="no-print text-[8px] font-semibold uppercase tracking-wider text-slate-500 mt-0.5">Foto (Opcional)</span>
+                                        </div>
+                                        <img id="profile-photo-img" src="" alt="Foto de Perfil" class="hidden w-full h-full object-cover object-center" />
+                                        <div class="photo-overlay opacity-0 transition-opacity duration-150 absolute inset-0 bg-[#0D1B2A]/75 text-white flex flex-col items-center justify-center text-center p-1">
+                                            <svg class="w-4 h-4 mb-0.5 text-sky-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+                                                <circle cx="12" cy="13" r="3"/>
+                                            </svg>
+                                            <span class="text-[8.5px] font-semibold leading-tight">Carregar Foto</span>
+                                        </div>
                                     </div>
-                                    <img id="profile-photo-img" src="" alt="Foto de Perfil" class="hidden w-full h-full object-cover object-center" />
-                                    <div class="photo-overlay opacity-0 transition-opacity duration-150 absolute inset-0 bg-[#0D1B2A]/75 text-white flex flex-col items-center justify-center text-center p-1">
-                                        <svg class="w-4 h-4 mb-0.5 text-sky-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
-                                            <circle cx="12" cy="13" r="3"/>
-                                        </svg>
-                                        <span class="text-[8.5px] font-semibold leading-tight">Carregar Foto</span>
-                                    </div>
+                                    <button id="btn-remove-photo" type="button" onclick="removeProfilePhoto(event)" title="Remover foto" class="photo-remove-btn hidden absolute -top-2 -right-2 z-20 w-5 h-5 rounded-full bg-rose-600 hover:bg-rose-500 text-white shadow flex items-center justify-center text-[11px] font-bold cursor-pointer">
+                                        ×
+                                    </button>
                                 </div>
-                                <button id="btn-remove-photo" type="button" onclick="removeProfilePhoto(event)" title="Remover foto" class="photo-remove-btn hidden absolute -top-2 -right-2 z-20 w-5 h-5 rounded-full bg-rose-600 hover:bg-rose-500 text-white shadow flex items-center justify-center text-[11px] font-bold cursor-pointer">
-                                    ×
-                                </button>
+
+                                <div class="flex-1 min-w-0">
+                                    <h1 data-editable="true" class="theme-primary-text text-[28px] font-extrabold text-[#12263A] tracking-tight leading-tight">
+                                        José Matos da Silva
+                                    </h1>
+                                    <p data-editable="true" class="theme-primary-text text-[14.5px] font-medium text-[#12263A] tracking-[0.26em] uppercase mt-1">
+                                        ENGENHEIRO CIVIL
+                                    </p>
+                                    <p data-editable="true" class="theme-primary-text text-[13.5px] italic text-[#12263A] leading-snug mt-2 font-medium max-w-sm">
+                                        Fiscalização, Gestão de Obras e<br>
+                                        Desenvolvimento de Projectos
+                                    </p>
+                                </div>
                             </div>
 
-                            <div class="flex-1 min-w-0">
-                                <h1 data-editable="true" class="theme-primary-text text-[28px] font-extrabold text-[#12263A] tracking-tight leading-tight">
-                                    José Matos da Silva
-                                </h1>
-                                <p data-editable="true" class="theme-primary-text text-[14.5px] font-medium text-[#12263A] tracking-[0.26em] uppercase mt-1">
-                                    ENGENHEIRO CIVIL
-                                </p>
-                                <p data-editable="true" class="theme-primary-text text-[13.5px] italic text-[#12263A] leading-snug mt-2 font-medium max-w-sm">
-                                    Fiscalização, Gestão de Obras e<br>
-                                    Desenvolvimento de Projectos
-                                </p>
+                            <!-- QR CODE: Recuado ~5cm da margem direita e deslocado 1cm para cima (-translate-y-2.5) -->
+                            <div class="shrink-0 flex flex-col items-center bg-white/95 p-1.5 rounded-lg border border-slate-200 shadow-sm z-20 mr-[48mm] -translate-y-2.5">
+                                <a href="https://josematos-cpu.github.io/CV-DIGITAL/" target="_blank" title="Ver na Website">
+                                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://josematos-cpu.github.io/CV-DIGITAL/" alt="QR Code Ver na Website" class="w-[18mm] h-[18mm] object-contain">
+                                </a>
+                                <span class="text-[7.5px] font-bold text-gray-800 uppercase tracking-tight mt-1">Ver na Website</span>
                             </div>
 
                         </div>
@@ -568,7 +579,7 @@
                                             <span data-editable="true" class="font-semibold text-[11px] text-gray-900 shrink-0">2023 – 2026</span>
                                         </div>
                                         <p data-editable="true" class="theme-secondary-text text-[11px] font-semibold text-[#1E3A5F] leading-tight mb-0.5">
-                                            MANUTEC-PREV,LDA
+                                            MANUTEC-PREV, LDA
                                         </p>
                                         <ul class="space-y-0.5 text-[11px] leading-[1.32] text-gray-900 pl-1">
                                             <li class="flex items-start gap-1.5">
